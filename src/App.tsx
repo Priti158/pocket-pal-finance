@@ -9,6 +9,15 @@ import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Expenses from "./pages/Expenses";
+import AddExpense from "./pages/AddExpense";
+import ScanReceipt from "./pages/ScanReceipt";
+import VoiceEntry from "./pages/VoiceEntry";
+import Budget from "./pages/Budget";
+import Forecast from "./pages/Forecast";
+import Groups from "./pages/Groups";
+import Reminders from "./pages/Reminders";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,15 +45,15 @@ const App = () => (
             >
               <Route index element={<Navigate to="/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="expenses" element={<Dashboard />} />
-              <Route path="expenses/add" element={<Dashboard />} />
-              <Route path="expenses/scan" element={<Dashboard />} />
-              <Route path="expenses/voice" element={<Dashboard />} />
-              <Route path="budget" element={<Dashboard />} />
-              <Route path="forecast" element={<Dashboard />} />
-              <Route path="groups" element={<Dashboard />} />
-              <Route path="reminders" element={<Dashboard />} />
-              <Route path="settings" element={<Dashboard />} />
+              <Route path="expenses" element={<Expenses />} />
+              <Route path="expenses/add" element={<AddExpense />} />
+              <Route path="expenses/scan" element={<ScanReceipt />} />
+              <Route path="expenses/voice" element={<VoiceEntry />} />
+              <Route path="budget" element={<Budget />} />
+              <Route path="forecast" element={<Forecast />} />
+              <Route path="groups" element={<Groups />} />
+              <Route path="reminders" element={<Reminders />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
