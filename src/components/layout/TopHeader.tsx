@@ -101,20 +101,20 @@ export const TopHeader = ({ title = 'Dashboard' }: TopHeaderProps) => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="gap-2 pl-2 pr-3">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.avatar} />
+                <AvatarImage src={user?.user_metadata?.avatar_url} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                  {user?.name?.charAt(0) || 'U'}
+                  {(user?.user_metadata?.name || user?.email)?.charAt(0)?.toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <span className="font-medium text-sm hidden md:block">
-                {user?.name || 'User'}
+                {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
               </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col">
-                <span>{user?.name || 'User'}</span>
+                <span>{user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}</span>
                 <span className="text-xs text-muted-foreground font-normal">
                   {user?.email || 'user@example.com'}
                 </span>

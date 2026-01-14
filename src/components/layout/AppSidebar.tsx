@@ -144,15 +144,15 @@ export const AppSidebar = () => {
           )}
         >
           <Avatar className="h-9 w-9">
-            <AvatarImage src={user?.avatar} />
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm">
-              {user?.name?.charAt(0) || 'U'}
+              {(user?.user_metadata?.name || user?.email)?.charAt(0)?.toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
           {!collapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-sidebar-foreground truncate">
-                {user?.name || 'User'}
+                {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
               </p>
               <p className="text-xs text-sidebar-foreground/60 truncate">
                 {user?.email || 'user@example.com'}
