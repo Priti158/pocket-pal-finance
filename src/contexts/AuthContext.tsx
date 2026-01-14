@@ -1,78 +1,56 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import type { User, AuthState } from '@/types/models';
-import { authApi, setAuthToken, getAuthToken } from '@/services/api';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
-interface AuthContextType extends AuthState {
+interface AuthContextType {
+  user: User | null;
+  session: Session | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
-  updateUser: (data: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    token: getAuthToken(),
-    isAuthenticated: false,
-    isLoading: true,
-  });
-
-  const checkAuth = useCallback(async () => {
-    const token = getAuthToken();
-    if (!token) {
-      setState(prev => ({ ...prev, isLoading: false }));
-      return;
-    }
-
-    try {
-      const response = await authApi.getProfile();
-      if (response.success && response.data) {
-        setState({
-          user: response.data,
-          token,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-      } else {
-        setAuthToken(null);
-        setState({
-          user: null,
-          token: null,
-          isAuthenticated: false,
-          isLoading: false,
-        });
-      }
-    } catch {
-      setAuthToken(null);
-      setState({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-    }
-  }, []);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setIsLoading(false);
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authApi.login(email, password);
-      if (response.success && response.data) {
-        setAuthToken(response.data.token);
-        setState({
-          user: response.data.user,
-          token: response.data.token,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-        return { success: true };
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        return { success: false, error: error.message };
       }
-      return { success: false, error: response.error || 'Login failed' };
+      
+      return { success: true };
     } catch (error) {
       return { success: false, error: 'Network error' };
     }
@@ -80,46 +58,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      const response = await authApi.register(name, email, password);
-      if (response.success && response.data) {
-        setAuthToken(response.data.token);
-        setState({
-          user: response.data.user,
-          token: response.data.token,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-        return { success: true };
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            name: name,
+            full_name: name,
+          },
+        },
+      });
+      
+      if (error) {
+        return { success: false, error: error.message };
       }
-      return { success: false, error: response.error || 'Registration failed' };
+      
+      return { success: true };
     } catch (error) {
       return { success: false, error: 'Network error' };
     }
   };
 
   const logout = async () => {
-    try {
-      await authApi.logout();
-    } finally {
-      setAuthToken(null);
-      setState({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-    }
-  };
-
-  const updateUser = (data: Partial<User>) => {
-    setState(prev => ({
-      ...prev,
-      user: prev.user ? { ...prev.user, ...data } : null,
-    }));
+    await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ ...state, login, register, logout, updateUser }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        session,
+        isAuthenticated: !!session, 
+        isLoading, 
+        login, 
+        register, 
+        logout 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -29,11 +29,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 
 const Settings = () => {
-  const { user, logout, updateUser } = useAuth();
+  const { user, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
   // Profile settings
-  const [name, setName] = useState(user?.name || "");
+  const [name, setName] = useState(user?.user_metadata?.name || user?.email?.split('@')[0] || "");
   const [email, setEmail] = useState(user?.email || "");
   
   // Preferences
@@ -51,7 +51,11 @@ const Settings = () => {
   const handleSaveProfile = async () => {
     setIsLoading(true);
     try {
-      await updateUser({ name, email });
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { error } = await supabase.auth.updateUser({
+        data: { name }
+      });
+      if (error) throw error;
       toast({
         title: "Profile updated",
         description: "Your profile has been saved successfully.",
@@ -110,9 +114,9 @@ const Settings = () => {
               {/* Avatar */}
               <div className="flex items-center gap-6">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={user?.avatar} />
+                  <AvatarImage src={user?.user_metadata?.avatar_url} />
                   <AvatarFallback className="text-2xl">
-                    {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                    {(user?.user_metadata?.name || user?.email)?.charAt(0)?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="space-y-2">
