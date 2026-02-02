@@ -129,7 +129,7 @@ const AddExpense = () => {
       console.log("Expense data:", data);
       toast({
         title: "Expense added",
-        description: `$${parseFloat(data.amount).toFixed(2)} expense has been recorded.`,
+        description: `₹${parseFloat(data.amount).toFixed(2)} expense has been recorded.`,
       });
       navigate("/expenses");
     } catch (error) {
@@ -170,7 +170,7 @@ const AddExpense = () => {
                     <FormControl>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                          $
+                          ₹
                         </span>
                         <Input
                           type="number"

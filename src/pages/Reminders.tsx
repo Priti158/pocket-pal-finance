@@ -229,7 +229,7 @@ const Reminders = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${upcomingTotal.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{upcomingTotal.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
@@ -287,7 +287,7 @@ const Reminders = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Amount</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                   <Input
                     type="number"
                     placeholder="0.00"
@@ -459,7 +459,7 @@ const Reminders = () => {
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
-                            <p className="text-lg font-bold">${reminder.amount.toFixed(2)}</p>
+                            <p className="text-lg font-bold">₹{reminder.amount.toFixed(2)}</p>
                             {getStatusBadge(status)}
                           </div>
                           <div className="flex items-center gap-2">
@@ -531,7 +531,7 @@ const Reminders = () => {
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-right">
-                          <p className="text-lg font-bold">${reminder.amount.toFixed(2)}</p>
+                          <p className="text-lg font-bold">₹{reminder.amount.toFixed(2)}</p>
                           {getStatusBadge("paid")}
                         </div>
                       </div>

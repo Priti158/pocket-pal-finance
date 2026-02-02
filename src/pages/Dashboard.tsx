@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const stats = [
-  { label: 'Total Balance', value: '$12,450', trend: 8.2, icon: Wallet, color: 'bg-primary' },
-  { label: 'Monthly Spending', value: '$3,280', trend: -5.4, icon: CreditCard, color: 'bg-accent' },
-  { label: 'Top Category', value: 'Food & Dining', subtitle: '$890 (27%)', icon: PieChart, color: 'bg-success' },
+  { label: 'Total Balance', value: '₹12,450', trend: 8.2, icon: Wallet, color: 'bg-primary' },
+  { label: 'Monthly Spending', value: '₹3,280', trend: -5.4, icon: CreditCard, color: 'bg-accent' },
+  { label: 'Top Category', value: 'Food & Dining', subtitle: '₹890 (27%)', icon: PieChart, color: 'bg-success' },
   { label: 'Upcoming Bills', value: '4 Bills', subtitle: 'Due this week', icon: Bell, color: 'bg-warning' },
 ];
 
@@ -69,7 +69,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-destructive">${Math.abs(expense.amount).toFixed(2)}</p>
+                  <p className="font-semibold text-destructive">₹{Math.abs(expense.amount).toFixed(2)}</p>
                   <p className="text-sm text-muted-foreground">{expense.date}</p>
                 </div>
               </div>

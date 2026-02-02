@@ -135,9 +135,9 @@ const VoiceEntry = () => {
     let parsedDescription = transcript.trim();
 
     // Simple parsing logic (Django would do this with NLP)
-    const amountMatch = transcript.match(/\$?\d+\.?\d*/);
+    const amountMatch = transcript.match(/₹?\d+\.?\d*/);
     if (amountMatch) {
-      parsedAmount = amountMatch[0].replace("$", "");
+      parsedAmount = amountMatch[0].replace("₹", "");
     }
 
     if (lowerTranscript.includes("food") || lowerTranscript.includes("lunch") || lowerTranscript.includes("dinner") || lowerTranscript.includes("grocery")) {
@@ -183,7 +183,7 @@ const VoiceEntry = () => {
     console.log("Saving expense:", { amount, description, category });
     toast({
       title: "Expense saved",
-      description: `$${parseFloat(amount).toFixed(2)} expense has been recorded.`,
+      description: `₹${parseFloat(amount).toFixed(2)} expense has been recorded.`,
     });
     navigate("/expenses");
   };
@@ -204,7 +204,7 @@ const VoiceEntry = () => {
               Voice Entry
             </CardTitle>
             <CardDescription>
-              Speak your expense naturally, e.g., "Spent $25 on lunch at the cafe"
+              Speak your expense naturally, e.g., "Spent ₹25 on lunch at the cafe"
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -328,7 +328,7 @@ const VoiceEntry = () => {
                     <Label>Amount</Label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                        $
+                        ₹
                       </span>
                       <Input
                         type="number"
