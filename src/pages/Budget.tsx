@@ -144,7 +144,7 @@ const BudgetPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalBudget.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{totalBudget.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
@@ -155,7 +155,7 @@ const BudgetPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalSpent.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{totalSpent.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">
               {((totalSpent / totalBudget) * 100).toFixed(1)}% of budget
             </p>
@@ -169,7 +169,7 @@ const BudgetPage = () => {
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${totalBudget - totalSpent < 0 ? 'text-destructive' : 'text-success'}`}>
-              ${(totalBudget - totalSpent).toFixed(2)}
+              ₹{(totalBudget - totalSpent).toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">Left to spend</p>
           </CardContent>
@@ -217,7 +217,7 @@ const BudgetPage = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Budget Amount</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                       <Input
                         type="number"
                         placeholder="0.00"
@@ -248,7 +248,7 @@ const BudgetPage = () => {
                       <div>
                         <h3 className="font-medium capitalize">{budget.category}</h3>
                         <p className="text-sm text-muted-foreground">
-                          ${budget.spent.toFixed(2)} of ${budget.amount.toFixed(2)}
+                          ₹{budget.spent.toFixed(2)} of ₹{budget.amount.toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -266,7 +266,7 @@ const BudgetPage = () => {
                   <div className="flex justify-between mt-2 text-xs text-muted-foreground">
                     <span>{((budget.spent / budget.amount) * 100).toFixed(0)}% used</span>
                     <span className={budget.remaining < 0 ? 'text-destructive' : ''}>
-                      {budget.remaining < 0 ? '-' : ''}${Math.abs(budget.remaining).toFixed(2)} remaining
+                      {budget.remaining < 0 ? '-' : ''}₹{Math.abs(budget.remaining).toFixed(2)} remaining
                     </span>
                   </div>
                 </CardContent>
@@ -309,7 +309,7 @@ const BudgetPage = () => {
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Suggested: <span className="font-medium text-foreground">${suggestion.suggestedAmount}</span>
+                    Suggested: <span className="font-medium text-foreground">₹{suggestion.suggestedAmount}</span>
                   </p>
                   <p className="text-xs text-muted-foreground mb-3">
                     {suggestion.reason}

@@ -262,7 +262,7 @@ const Groups = () => {
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Amount</label>
                           <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                             <Input type="number" placeholder="0.00" className="pl-8" />
                           </div>
                         </div>
@@ -315,7 +315,7 @@ const Groups = () => {
                             {member.balance >= 0 ? 'gets back' : 'owes'}
                           </p>
                           <p className={`text-xl font-bold ${member.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
-                            ${Math.abs(member.balance).toFixed(2)}
+                            ₹{Math.abs(member.balance).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -364,7 +364,7 @@ const Groups = () => {
                               </Badge>
                             </TableCell>
                             <TableCell className="text-right font-semibold">
-                              ${expense.amount.toFixed(2)}
+                              ₹{expense.amount.toFixed(2)}
                             </TableCell>
                           </TableRow>
                         );
@@ -395,7 +395,7 @@ const Groups = () => {
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">Jane pays John</p>
-                        <p className="text-lg font-bold">$75.25</p>
+                        <p className="text-lg font-bold">₹75.25</p>
                       </div>
                       <Button size="sm">Settle Up</Button>
                     </div>
@@ -411,7 +411,7 @@ const Groups = () => {
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">Mike pays John</p>
-                        <p className="text-lg font-bold">$50.25</p>
+                        <p className="text-lg font-bold">₹50.25</p>
                       </div>
                       <Button size="sm">Settle Up</Button>
                     </div>

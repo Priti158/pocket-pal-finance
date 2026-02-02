@@ -278,7 +278,7 @@ const Expenses = () => {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right font-semibold">
-                      ${expense.amount.toFixed(2)}
+                      ₹{expense.amount.toFixed(2)}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
