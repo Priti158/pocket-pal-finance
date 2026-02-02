@@ -1,16 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Area,
-  AreaChart,
   Legend,
+  BarChart,
+  Bar,
 } from "recharts";
 import { 
   TrendingUp, 
@@ -23,7 +21,7 @@ import {
 } from "lucide-react";
 import { ForecastData, SpendingInsight } from "@/types/models";
 
-// Mock forecast data
+// Mock forecast data with income vs expense
 const mockForecastData: ForecastData[] = [
   { month: "Jan", predictedAmount: 1850, lowerBound: 1650, upperBound: 2050, confidence: 0.92 },
   { month: "Feb", predictedAmount: 1920, lowerBound: 1700, upperBound: 2140, confidence: 0.89 },
@@ -33,25 +31,14 @@ const mockForecastData: ForecastData[] = [
   { month: "Jun", predictedAmount: 2200, lowerBound: 1900, upperBound: 2500, confidence: 0.75 },
 ];
 
-// Historical data for comparison
-const historicalData = [
-  { month: "Aug", actual: 1650 },
-  { month: "Sep", actual: 1780 },
-  { month: "Oct", actual: 1920 },
-  { month: "Nov", actual: 1850 },
-  { month: "Dec", actual: 2100 },
-];
-
-// Combined chart data
+// Income vs Expense chart data
 const chartData = [
-  ...historicalData.map(d => ({ ...d, type: 'historical' })),
-  ...mockForecastData.map(d => ({ 
-    month: d.month, 
-    predicted: d.predictedAmount,
-    lowerBound: d.lowerBound,
-    upperBound: d.upperBound,
-    type: 'forecast'
-  })),
+  { month: "Jan", income: 45000, expense: 32000 },
+  { month: "Feb", income: 48000, expense: 35000 },
+  { month: "Mar", income: 52000, expense: 38000 },
+  { month: "Apr", income: 47000, expense: 34000 },
+  { month: "May", income: 55000, expense: 40000 },
+  { month: "Jun", income: 58000, expense: 42000 },
 ];
 
 const mockInsights: SpendingInsight[] = [
@@ -90,8 +77,8 @@ const insightStyles = {
 const ForecastPage = () => {
   const nextMonthForecast = mockForecastData[0];
   const avgMonthlySpending = mockForecastData.reduce((sum, f) => sum + f.predictedAmount, 0) / mockForecastData.length;
-  const lastActual = historicalData[historicalData.length - 1].actual;
-  const trend = ((nextMonthForecast.predictedAmount - lastActual) / lastActual) * 100;
+  const lastExpense = chartData[chartData.length - 2]?.expense || 40000;
+  const trend = ((nextMonthForecast.predictedAmount - lastExpense) / lastExpense) * 100;
 
   return (
     <div className="space-y-6">
@@ -104,7 +91,7 @@ const ForecastPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${nextMonthForecast.predictedAmount.toFixed(0)}</div>
+            <div className="text-2xl font-bold">₹{nextMonthForecast.predictedAmount.toFixed(0)}</div>
             <div className="flex items-center gap-1 mt-1">
               {trend > 0 ? (
                 <TrendingUp className="h-4 w-4 text-destructive" />
@@ -124,7 +111,7 @@ const ForecastPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${avgMonthlySpending.toFixed(0)}</div>
+            <div className="text-2xl font-bold">₹{avgMonthlySpending.toFixed(0)}</div>
             <p className="text-xs text-muted-foreground mt-1">Predicted monthly spending</p>
           </CardContent>
         </Card>
@@ -146,7 +133,7 @@ const ForecastPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">$320</div>
+            <div className="text-2xl font-bold text-success">₹320</div>
             <p className="text-xs text-muted-foreground mt-1">If you follow AI tips</p>
           </CardContent>
         </Card>
@@ -160,87 +147,52 @@ const ForecastPage = () => {
               <Target className="h-5 w-5" />
               Spending Forecast
             </CardTitle>
-            <CardDescription>
-              Historical spending and AI-predicted future expenses with confidence intervals
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorPredicted" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                  <XAxis dataKey="month" className="text-xs" />
-                  <YAxis className="text-xs" tickFormatter={(value) => `$${value}`} />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--card))', 
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                    formatter={(value: number) => [`$${value.toFixed(0)}`, '']}
-                  />
-                  <Legend />
-                  <Area
-                    type="monotone"
-                    dataKey="actual"
-                    stroke="hsl(var(--chart-2))"
-                    fill="url(#colorActual)"
-                    strokeWidth={2}
-                    name="Actual Spending"
-                    dot={{ fill: 'hsl(var(--chart-2))' }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="upperBound"
-                    stroke="transparent"
-                    fill="hsl(var(--primary))"
-                    fillOpacity={0.1}
-                    name="Upper Bound"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="lowerBound"
-                    stroke="transparent"
-                    fill="hsl(var(--background))"
-                    name="Lower Bound"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="predicted"
-                    stroke="hsl(var(--primary))"
-                    strokeWidth={2}
-                    strokeDasharray="5 5"
-                    name="Predicted"
-                    dot={{ fill: 'hsl(var(--primary))' }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+          <CardDescription>
+            Monthly income vs expense comparison
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} barGap={8}>
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis dataKey="month" className="text-xs" />
+                <YAxis className="text-xs" tickFormatter={(value) => `₹${value / 1000}k`} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'hsl(var(--card))', 
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px'
+                  }}
+                  formatter={(value: number) => [`₹${value.toLocaleString('en-IN')}`, '']}
+                />
+                <Legend />
+                <Bar
+                  dataKey="income"
+                  fill="hsl(var(--success))"
+                  name="Income"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="expense"
+                  fill="hsl(var(--destructive))"
+                  name="Expense"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded bg-success" />
+              <span>Income</span>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-chart-2" />
-                <span>Historical</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-0.5 bg-primary" style={{ borderStyle: 'dashed', borderWidth: '2px' }} />
-                <span>Forecast</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-primary/20" />
-                <span>Confidence Range</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded bg-destructive" />
+              <span>Expense</span>
             </div>
-          </CardContent>
+          </div>
+        </CardContent>
         </Card>
 
         {/* AI Insights */}
@@ -296,9 +248,9 @@ const ForecastPage = () => {
                     {Math.round(forecast.confidence * 100)}% confident
                   </Badge>
                 </div>
-                <div className="text-2xl font-bold">${forecast.predictedAmount}</div>
+                <div className="text-2xl font-bold">₹{forecast.predictedAmount}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Range: ${forecast.lowerBound} - ${forecast.upperBound}
+                  Range: ₹{forecast.lowerBound} - ₹{forecast.upperBound}
                 </p>
               </div>
             ))}
