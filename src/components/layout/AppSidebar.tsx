@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Wallet,
+  IndianRupee,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -28,6 +29,7 @@ import {
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+  { icon: IndianRupee, label: 'Income', path: '/income' },
   { icon: Receipt, label: 'Expenses', path: '/expenses' },
   { icon: PlusCircle, label: 'Add Expense', path: '/expenses/add' },
   { icon: Camera, label: 'Scan Receipt', path: '/expenses/scan' },
