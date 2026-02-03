@@ -5,6 +5,7 @@ import { TopHeader } from './TopHeader';
 const pageTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/': 'Dashboard',
+  '/income': 'Income',
   '/expenses': 'Expenses',
   '/expenses/add': 'Add Expense',
   '/expenses/scan': 'Scan Receipt',
