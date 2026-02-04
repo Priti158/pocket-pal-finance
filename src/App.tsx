@@ -19,6 +19,7 @@ import Forecast from "./pages/Forecast";
 import Groups from "./pages/Groups";
 import Reminders from "./pages/Reminders";
 import Settings from "./pages/Settings";
+import InvestmentAnalyzer from "./pages/InvestmentAnalyzer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="expenses/voice" element={<VoiceEntry />} />
               <Route path="budget" element={<Budget />} />
               <Route path="forecast" element={<Forecast />} />
+              <Route path="investments" element={<InvestmentAnalyzer />} />
               <Route path="groups" element={<Groups />} />
               <Route path="reminders" element={<Reminders />} />
               <Route path="settings" element={<Settings />} />
