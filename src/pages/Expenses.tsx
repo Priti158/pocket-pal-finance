@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +45,7 @@ import {
 } from "lucide-react";
 import { Expense, ExpenseCategory } from "@/types/models";
 import { Link } from "react-router-dom";
+import { EditExpenseDialog } from "@/components/expenses/EditExpenseDialog";
 
 const categoryIcons: Record<ExpenseCategory, React.ReactNode> = {
   food: <Utensils className="h-4 w-4" />,
@@ -144,7 +145,20 @@ const mockExpenses: Expense[] = [
 const Expenses = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [expenses] = useState<Expense[]>(mockExpenses);
+  const [expenses, setExpenses] = useState<Expense[]>(mockExpenses);
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleEditClick = (expense: Expense) => {
+    setEditingExpense(expense);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveExpense = (updatedExpense: Expense) => {
+    setExpenses((prev) =>
+      prev.map((exp) => (exp.id === updatedExpense.id ? updatedExpense : exp))
+    );
+  };
 
   const filteredExpenses = expenses.filter((expense) => {
     const matchesSearch = expense.description
@@ -288,7 +302,7 @@ const Expenses = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditClick(expense)}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
@@ -306,6 +320,13 @@ const Expenses = () => {
           </div>
         </CardContent>
       </Card>
+
+      <EditExpenseDialog
+        expense={editingExpense}
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        onSave={handleSaveExpense}
+      />
     </div>
   );
 };
