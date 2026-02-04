@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Wallet,
   IndianRupee,
+  LineChart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -36,6 +37,7 @@ const navItems = [
   { icon: Mic, label: 'Voice Entry', path: '/expenses/voice' },
   { icon: PieChart, label: 'Budget', path: '/budget' },
   { icon: TrendingUp, label: 'Forecast', path: '/forecast' },
+  { icon: LineChart, label: 'Investments', path: '/investments' },
   { icon: Users, label: 'Groups', path: '/groups' },
   { icon: Bell, label: 'Reminders', path: '/reminders' },
 ];
