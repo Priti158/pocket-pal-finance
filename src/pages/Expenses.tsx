@@ -160,6 +160,29 @@ const Expenses = () => {
     );
   };
 
+  const handleDownload = () => {
+    const headers = ["Date", "Description", "Category", "Payment Method", "Amount"];
+    const csvData = filteredExpenses.map((expense) => [
+      expense.date,
+      expense.description,
+      expense.category,
+      expense.paymentMethod,
+      expense.amount.toFixed(2),
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...csvData.map((row) => row.map((cell) => `"${cell}"`).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `expenses_${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
   const filteredExpenses = expenses.filter((expense) => {
     const matchesSearch = expense.description
       .toLowerCase()
@@ -242,7 +265,7 @@ const Expenses = () => {
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" onClick={handleDownload}>
                 <Download className="h-4 w-4" />
               </Button>
             </div>
