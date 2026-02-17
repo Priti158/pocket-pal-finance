@@ -700,6 +700,57 @@ export type Database = {
           },
         ]
       }
+      receipts: {
+        Row: {
+          ai_confidence: number | null
+          ai_detected_category: string | null
+          amount: number
+          category: string
+          created_at: string
+          date: string
+          description: string | null
+          extracted_text: string | null
+          id: string
+          image_url: string | null
+          is_reimbursable: boolean
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_confidence?: number | null
+          ai_detected_category?: string | null
+          amount: number
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          is_reimbursable?: boolean
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_confidence?: number | null
+          ai_detected_category?: string | null
+          amount?: number
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          is_reimbursable?: boolean
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       settings: {
         Row: {
           created_at: string

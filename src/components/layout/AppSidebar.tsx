@@ -18,6 +18,9 @@ import {
   Wallet,
   IndianRupee,
   LineChart,
+  Upload,
+  FileText,
+  ClipboardList,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -35,6 +38,9 @@ const navItems = [
   { icon: PlusCircle, label: 'Add Expense', path: '/expenses/add' },
   { icon: Camera, label: 'Scan Receipt', path: '/expenses/scan' },
   { icon: Mic, label: 'Voice Entry', path: '/expenses/voice' },
+  { icon: Upload, label: 'Upload Receipt', path: '/upload-receipt' },
+  { icon: FileText, label: 'Receipt History', path: '/receipts' },
+  { icon: ClipboardList, label: 'Monthly Claims', path: '/claims' },
   { icon: PieChart, label: 'Budget', path: '/budget' },
   { icon: TrendingUp, label: 'Forecast', path: '/forecast' },
   { icon: LineChart, label: 'Investments', path: '/investments' },

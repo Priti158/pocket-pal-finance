@@ -13,6 +13,9 @@ import Income from "./pages/Income";
 import Expenses from "./pages/Expenses";
 import AddExpense from "./pages/AddExpense";
 import ScanReceipt from "./pages/ScanReceipt";
+import UploadReceipt from "./pages/UploadReceipt";
+import ReceiptList from "./pages/ReceiptList";
+import Claims from "./pages/Claims";
 import VoiceEntry from "./pages/VoiceEntry";
 import Budget from "./pages/Budget";
 import Forecast from "./pages/Forecast";
@@ -52,6 +55,9 @@ const App = () => (
               <Route path="expenses/add" element={<AddExpense />} />
               <Route path="expenses/scan" element={<ScanReceipt />} />
               <Route path="expenses/voice" element={<VoiceEntry />} />
+              <Route path="upload-receipt" element={<UploadReceipt />} />
+              <Route path="receipts" element={<ReceiptList />} />
+              <Route path="claims" element={<Claims />} />
               <Route path="budget" element={<Budget />} />
               <Route path="forecast" element={<Forecast />} />
               <Route path="investments" element={<InvestmentAnalyzer />} />
