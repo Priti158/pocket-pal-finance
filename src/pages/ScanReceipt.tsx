@@ -1,11 +1,14 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -28,7 +31,9 @@ import { ReceiptData, ExpenseCategory } from "@/types/models";
 
 const ScanReceipt = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [saveForClaim, setSaveForClaim] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -117,13 +122,46 @@ const ScanReceipt = () => {
   };
 
   const handleSave = async () => {
-    // API call would go here
-    console.log("Saving expense:", { amount, description, category, date });
-    toast({
-      title: "Expense saved",
-      description: `$${parseFloat(amount).toFixed(2)} expense has been recorded from receipt.`,
-    });
-    navigate("/expenses");
+    if (!user) {
+      toast({ title: "Not logged in", variant: "destructive" });
+      return;
+    }
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      toast({ title: "Invalid amount", variant: "destructive" });
+      return;
+    }
+
+    // Save to receipts table for history & claims
+    if (saveForClaim) {
+      const { error } = await supabase.from("receipts").insert({
+        user_id: user.id,
+        amount: parsedAmount,
+        category,
+        description,
+        date: date || new Date().toISOString().split("T")[0],
+        is_reimbursable: true,
+        status: "pending",
+        extracted_text: extractedData?.extractedText || null,
+        ai_confidence: extractedData?.confidence || null,
+        ai_detected_category: extractedData?.suggestedCategory || null,
+      });
+      if (error) {
+        toast({ title: "Error saving receipt", description: error.message, variant: "destructive" });
+        return;
+      }
+      toast({
+        title: "Receipt saved for claim",
+        description: `₹${parsedAmount.toFixed(2)} added to receipt history & monthly claims.`,
+      });
+      navigate("/receipts");
+    } else {
+      toast({
+        title: "Expense saved",
+        description: `₹${parsedAmount.toFixed(2)} expense recorded.`,
+      });
+      navigate("/expenses");
+    }
   };
 
   return (
@@ -322,10 +360,25 @@ const ScanReceipt = () => {
                     {extractedData.extractedText}
                   </pre>
                 </div>
+                <div className="flex items-center justify-between py-3 px-3 rounded-lg bg-muted/50">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="save-claim" className="text-sm font-medium cursor-pointer">
+                      Save for Business Allowance
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Add to receipt history & monthly claims
+                    </p>
+                  </div>
+                  <Switch
+                    id="save-claim"
+                    checked={saveForClaim}
+                    onCheckedChange={setSaveForClaim}
+                  />
+                </div>
 
                 <Button onClick={handleSave} className="w-full">
                   <Check className="mr-2 h-4 w-4" />
-                  Save Expense
+                  {saveForClaim ? "Save & Add to Claims" : "Save Expense"}
                 </Button>
               </div>
             )}
