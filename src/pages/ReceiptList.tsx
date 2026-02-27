@@ -63,8 +63,8 @@ const ReceiptList = () => {
           <h1 className="text-2xl font-bold">Receipt History</h1>
           <p className="text-muted-foreground text-sm">{receipts.length} receipts uploaded</p>
         </div>
-        <Button onClick={() => navigate("/upload-receipt")}>
-          <PlusCircle className="mr-2 h-4 w-4" /> Upload Receipt
+        <Button onClick={() => navigate("/expenses/scan")}>
+          <PlusCircle className="mr-2 h-4 w-4" /> Scan Receipt
         </Button>
       </div>
 
@@ -95,8 +95,8 @@ const ReceiptList = () => {
           <CardContent className="flex flex-col items-center justify-center py-16">
             <FileImage className="h-12 w-12 text-muted-foreground/40 mb-4" />
             <p className="text-muted-foreground mb-4">No receipts found</p>
-            <Button onClick={() => navigate("/upload-receipt")}>
-              <PlusCircle className="mr-2 h-4 w-4" /> Upload Your First Receipt
+            <Button onClick={() => navigate("/expenses/scan")}>
+              <PlusCircle className="mr-2 h-4 w-4" /> Scan Your First Receipt
             </Button>
           </CardContent>
         </Card>

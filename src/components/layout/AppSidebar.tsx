@@ -38,7 +38,7 @@ const navItems = [
   { icon: PlusCircle, label: 'Add Expense', path: '/expenses/add' },
   { icon: Camera, label: 'Scan Receipt', path: '/expenses/scan' },
   { icon: Mic, label: 'Voice Entry', path: '/expenses/voice' },
-  { icon: Upload, label: 'Upload Receipt', path: '/upload-receipt' },
+  
   { icon: FileText, label: 'Receipt History', path: '/receipts' },
   { icon: ClipboardList, label: 'Monthly Claims', path: '/claims' },
   { icon: PieChart, label: 'Budget', path: '/budget' },
