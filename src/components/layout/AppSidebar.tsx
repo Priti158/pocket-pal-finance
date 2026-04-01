@@ -44,6 +44,7 @@ const navItems = [
   { icon: PieChart, label: 'Budget', path: '/budget' },
   { icon: TrendingUp, label: 'Forecast', path: '/forecast' },
   { icon: LineChart, label: 'Investments', path: '/investments' },
+  { icon: Calculator, label: 'Analysis', path: '/investments/analysis' },
   { icon: Users, label: 'Groups', path: '/groups' },
   { icon: Bell, label: 'Reminders', path: '/reminders' },
 ];
