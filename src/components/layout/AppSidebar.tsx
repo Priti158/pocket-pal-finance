@@ -18,6 +18,7 @@ import {
   Wallet,
   IndianRupee,
   LineChart,
+  Calculator,
   Upload,
   FileText,
   ClipboardList,
