@@ -23,6 +23,7 @@ import Groups from "./pages/Groups";
 import Reminders from "./pages/Reminders";
 import Settings from "./pages/Settings";
 import InvestmentAnalyzer from "./pages/InvestmentAnalyzer";
+import InvestmentAnalysis from "./pages/InvestmentAnalysis";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
